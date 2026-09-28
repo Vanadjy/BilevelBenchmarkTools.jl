@@ -1,6 +1,6 @@
-using JSOTemplate
+using BilevelBenchmarkTools
 using Test
 
-@testset "JSOTemplate.jl" begin
+@testset "BilevelBenchmarkTools.jl" begin
   # Write your tests here.
 end
