@@ -1,6 +1,6 @@
 export referee_challenge, EndPoint_Referee, Complete_Referee!, Reverse_Referee!
 
-function referee_challenge(k::Int, model::BilevelProblem, xHists, yHists, fHists, prob::Int, algo::String, referees, referee_options::Vector{Any}; tol_ref::Float64 = 1e-3)
+function referee_challenge(k::Int, model::BilevelProblem, xHists, yHists, fHists, prob::Int, algo::String, referees::Vector{Function}, referee_options::Vector{Any}; tol_ref::Float64 = 1e-3)
     referee_flag = false
     x_star = xHists[prob][algo][:, k]
     f_star = fHists[prob][algo][k]

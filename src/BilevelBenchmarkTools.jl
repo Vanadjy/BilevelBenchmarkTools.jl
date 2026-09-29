@@ -4,7 +4,7 @@ module BilevelBenchmarkTools
 using BOLIB
 
 include("compute_lambda.jl")
-include("strategies.jl")
+include("referee_strategies.jl")
 include("agregate_efforts.jl")
 
 end
