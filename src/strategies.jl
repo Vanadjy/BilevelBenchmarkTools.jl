@@ -1,6 +1,6 @@
 export referee_challenge, EndPoint_Referee, Complete_Referee!, Reverse_Referee!
 
-function referee_challenge(k::Int, model::BilevelProblem, xHists, yHists, fHists, prob::Int, algo::String, referees, referee_options; tol_ref::R = 1e-3) where {R <: Float64}
+function referee_challenge(k::Int, model::BilevelProblem, xHists, yHists, fHists, prob::Int, algo::String, referees, referee_options::Vector{Any}; tol_ref::Float64 = 1e-3)
     referee_flag = false
     x_star = xHists[prob][algo][:, k]
     f_star = fHists[prob][algo][k]
@@ -16,7 +16,7 @@ function referee_challenge(k::Int, model::BilevelProblem, xHists, yHists, fHists
     for ref_index in eachindex(referees)
 
         referee = referees[ref_index]
-        y_new, new_f, neval_lower = referee(model, x_star, x0y0[nx+1:nx+ny]; referee_options[ref_index])
+        y_new, new_f, neval_lower = referee(model, x_star, x0y0[nx+1:nx+ny], referee_options[ref_index])
 
         if (all(G(x_star, y_new) .<= 0.0)) && (new_f < f_star - tol_ref)  # The BEST referee found a strictly better solution than the algo AND is feasible w.r.t upper-level constraints
             @info "A referee found a better final solution than $algo on problem $prob at iterate $k"
