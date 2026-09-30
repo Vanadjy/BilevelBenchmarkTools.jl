@@ -27,7 +27,7 @@ function referee_challenge(k::Int, model::BilevelProblem, xHists, yHists, fHists
     return referee_flag
 end
 
-function EndPoint_Referee(F_all_hists_adjusted, N_all_hists_adjusted, algo_names, prob_numbers, x_all_hists, y_all_hists, f_all_hists, referees::Vector{Union{String, Int}}, referee_options; tol_ref::Float64 = 1e-3)
+function EndPoint_Referee(F_all_hists_adjusted, N_all_hists_adjusted, algo_names, prob_numbers, x_all_hists, y_all_hists, f_all_hists, referees::Vector{Function}, referee_options; tol_ref::Float64 = 1e-3)
     @assert length(referees) == length(referee_options) "Mismatch error: Each Referee should be assigned specific options"
 
     for prob in eachindex(prob_numbers)
