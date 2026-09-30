@@ -35,7 +35,7 @@ function EndPoint_Referee(F_all_hists_adjusted, N_all_hists_adjusted, algo_names
         for a in eachindex(algo_names)
             algo = algo_names[a]
             if x_all_hists[prob][algo][end] !== x_all_hists[prob][algo][1] # If the algorithm did not moved from the starting point, ignore it
-                Random.seed!(seed)
+                #Random.seed!(seed)
                 k = length(f_all_hists[prob][algo])
                 flag = referee_challenge(k, model, x_all_hists, y_all_hists, f_all_hists, prob, algo, referees, referee_options; tol_ref = tol_ref)
                 if flag #referee found a better LL solution than algo
@@ -69,7 +69,7 @@ function Complete_Referee!(F_all_hists_adjusted, N_all_hists_adjusted, algo_name
             if x_all_hists[prob][algo][end] !== x_all_hists[prob][algo][1] # If the algorithm did not moved from the starting point, ignore it
                 k = length(f_all_hists[prob][algo])
                 while k >= 1
-                    Random.seed!(seed)
+                    #Random.seed!(seed)
                     flag = referee_challenge(k, model, x_all_hists, y_all_hists, f_all_hists, prob, algo, referees, referee_options; tol_ref = tol_ref)
                     if flag #referee found at least once a better LL solution than algo
                         F_all_hists_adjusted[prob][algo][k] = NaN # Set at Inf the corresponding value in the upper objective historic
@@ -103,7 +103,7 @@ function Reverse_Referee!(F_all_hists_adjusted, N_all_hists_adjusted, algo_names
                 flag = true
                 k = length(f_all_hists[prob][algo])
                 while flag && k >= 1 # Once we found an admissible point in the historic, we stop
-                    Random.seed!(seed)
+                    #Random.seed!(seed)
                     flag = referee_challenge(k, model, x_all_hists, y_all_hists, f_all_hists, prob, algo, referees, referee_options; tol_ref = tol_ref)
                     if flag #referee found at least once a better LL solution than algo
                         F_all_hists_adjusted[prob][algo][k] = NaN # Set at Inf the corresponding value in the upper objective historic 
