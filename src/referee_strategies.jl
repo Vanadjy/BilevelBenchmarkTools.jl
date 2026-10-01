@@ -27,11 +27,12 @@ function referee_challenge(k::Int, model::BilevelProblem, xHists, yHists, fHists
     return referee_flag
 end
 
-function EndPoint_Referee(F_all_hists_adjusted, N_all_hists_adjusted, algo_names, prob_numbers, x_all_hists, y_all_hists, f_all_hists, referees::Vector{Function}, referee_options; tol_ref::Float64 = 1e-3)
+function EndPoint_Referee(models, F_all_hists_adjusted, N_all_hists_adjusted, algo_names, prob_numbers, x_all_hists, y_all_hists, f_all_hists, referees::Vector{Function}, referee_options; tol_ref::Float64 = 1e-3)
     @assert length(referees) == length(referee_options) "Mismatch error: Each Referee should be assigned specific options"
+    @assert length(models) == length(prob_numbers) "Mismatch error: Each problem should have an associated model"
 
     for prob in eachindex(prob_numbers)
-        model = get_bilevel_problem(prob_numbers[prob])
+        model = models[prob]
         for a in eachindex(algo_names)
             algo = algo_names[a]
             if x_all_hists[prob][algo][end] !== x_all_hists[prob][algo][1] # If the algorithm did not moved from the starting point, ignore it
@@ -60,11 +61,12 @@ function EndPoint_Referee(F_all_hists_adjusted, N_all_hists_adjusted, algo_names
     return F_all_hists_adjusted, N_all_hists_adjusted, orphans
 end
 
-function Complete_Referee!(F_all_hists_adjusted, N_all_hists_adjusted, algo_names, prob_numbers, x_all_hists, y_all_hists, f_all_hists, referees::Vector{Union{String, Int}}, referee_options; tol_ref::Float64 = 1e-3)
+function Complete_Referee!(models, F_all_hists_adjusted, N_all_hists_adjusted, algo_names, prob_numbers, x_all_hists, y_all_hists, f_all_hists, referees::Vector{Union{String, Int}}, referee_options; tol_ref::Float64 = 1e-3)
     @assert length(referees) == length(referee_options) "Mismatch error: Each Referee should be assigned specific options"
-    
+    @assert length(models) == length(prob_numbers) "Mismatch error: Each problem should have an associated model"
+
     for prob in eachindex(prob_numbers)
-        model = get_bilevel_problem(prob_numbers[prob])
+        model = models[prob]
         for algo in algo_names
             if x_all_hists[prob][algo][end] !== x_all_hists[prob][algo][1] # If the algorithm did not moved from the starting point, ignore it
                 k = length(f_all_hists[prob][algo])
@@ -94,10 +96,12 @@ function Complete_Referee!(F_all_hists_adjusted, N_all_hists_adjusted, algo_name
     return F_all_hists_adjusted, N_all_hists_adjusted, orphans
 end
 
-function Reverse_Referee!(F_all_hists_adjusted, N_all_hists_adjusted, algo_names, prob_numbers, x_all_hists, y_all_hists, f_all_hists, referees::Vector{Union{String, Int}}, referee_options; tol_ref::Float64 = 1e-3)
+function Reverse_Referee!(models, F_all_hists_adjusted, N_all_hists_adjusted, algo_names, prob_numbers, x_all_hists, y_all_hists, f_all_hists, referees::Vector{Union{String, Int}}, referee_options; tol_ref::Float64 = 1e-3)
     @assert length(referees) == length(referee_options) "Mismatch error: Each Referee should be assigned specific options"
+    @assert length(models) == length(prob_numbers) "Mismatch error: Each problem should have an associated model"
+
     for prob in eachindex(prob_numbers)
-        model = get_bilevel_problem(prob_numbers[prob])
+        model = models[prob]
         for algo in algo_names
             if x_all_hists[prob][algo][end] !== x_all_hists[prob][algo][1] # If the algorithm did not moved from the starting point, ignore it
                 flag = true
